@@ -30,7 +30,7 @@ const UserType = new GraphQLObjectType({
     name: { type: GraphQLString },
     string: { type: GraphQLString },
     tasks: {
-      type: TaskType,
+      type: new GraphQLList(TaskType),
       resolve(parent, args) {
         return Task.find({ assigneeId: parent.id });
       },
