@@ -28,7 +28,6 @@ const UserType = new GraphQLObjectType({
   fields: () => ({
     id: { type: GraphQLID },
     name: { type: GraphQLString },
-    string: { type: GraphQLString },
     tasks: {
       type: new GraphQLList(TaskType),
       resolve(parent, args) {
