@@ -8,6 +8,14 @@ const {
   GraphQLList, GraphQLNonNull,
 } = graphql;
 
+const someType = new GraphQLObjectType({
+  name: 'someType',
+  fields: () => ({
+    title: { type: GraphQLString },
+    description: { type: GraphQLString },
+  }),
+});
+
 const TaskType = new GraphQLObjectType({
   name: 'Task',
   fields: () => ({
@@ -28,6 +36,9 @@ const UserType = new GraphQLObjectType({
   fields: () => ({
     id: { type: GraphQLID },
     name: { type: GraphQLString },
+    someType: {
+      type: someType,
+    },
     tasks: {
       type: new GraphQLList(TaskType),
       resolve(parent, args) {
@@ -101,11 +112,11 @@ const Mutation = new GraphQLObjectType({
       },
       async resolve(parent, args) {
         const user = await User.findOne({ name: args.assignedUser });
-        if(!user) {
+        if (!user) {
           throw new Error('User not found');
         }
         delete args.assignedUser;
-        const task = new Task({...args,assigneeId:user._id});
+        const task = new Task({ ...args, assigneeId: user._id });
         return task.save();
       },
     },
